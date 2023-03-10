@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        #txtSecretId{
+            display: none;
+        }
+        .autoFilled{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <input type="text" name="" placeholder="UserName" id="txtUsername">
+        <input type="text" name="" placeholder="Password" id="txtPassword">
+        <input type="submit" name="" onclick="updateUser()" value="Update">
+    </div>
+    <div class="autoFilled" id="autoFilled">
+        <input type="text" name="" id="fillemail">
+        <input type="text" name="" id="fillname">
+        <input type="text" name="" id="fillpassword">
+        <input type="text" name="" id="fillusername">
+        <input type="text" name="" id="txtSecretId">
+        <input type="submit" name="" onclick="updateUsers()">
+    </div>
+    <script>
+        let fillemail = document.getElementById("fillemail")
+        let fillname = document.getElementById("fillname")
+        let fillpassword = document.getElementById("fillpassword")
+        let fillusername = document.getElementById("fillusername")
+        let txtUsername = document.getElementById("txtUsername");
+        let txtPassword = document.getElementById("txtPassword");
+        let userID
+
+        function updateUsers() {
+                        fetch('http://localhost:8080/updatee', {
+                        method: "POST",
+                        body: JSON.stringify({
+                            id: userID,
+                            username: fillusername.value,
+                            password: fillpassword.value,
+                            email: fillemail.value,
+                            name: fillname.value
+                        }),
+                        headers: { "Content-type": "application/json; charset=UTF-8" }
+                    })
+                }
+
+        function updateUser() {
+            if (txtPassword.value == "" || txtUsername.value == "") {
+                alert("Boş Birakilamaz")
+            }
+            else {
+                fetch('http://localhost:8080/update', {
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: txtUsername.value,
+                        password: txtPassword.value,
+                    }),
+                    headers: { "Content-type": "application/json; charset=UTF-8" }
+                })
+                .then(response=>response.json())
+                .then(user=>{
+                    fillemail.value=user.email
+                    fillname.value = user.name
+                    fillpassword.value = user.password
+                    fillusername.value=user.username
+                    document.getElementById("container").style.display="none"
+                    document.getElementById("autoFilled").style.display="block"
+                    userID=user._id  
+                })
+            }
+        }
+
+    </script>
+</body>
+
+</html>

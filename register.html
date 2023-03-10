@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Register Page</title>
+</head>
+
+<body>
+    <div class="container">
+        <input type="text" name="" id="txtname" placeholder="ad">
+        <input type="text" name="" id="txtusername" placeholder="kullaniciadi">
+        <input type="text" name="" id="txtpassword" placeholder="şifre">
+        <input type="text" name="" id="txtemail" placeholder="email">
+        <input type="submit" name="" id="button" onclick="register()">
+    </div>
+    <script>
+        function register() {
+            let txtUsername = document.getElementById("txtusername")
+            let txtname = document.getElementById("txtname")
+            let txtemail = document.getElementById("txtemail")
+            let txtPassword = document.getElementById("txtpassword")
+            let btnLogin = document.getElementById("btnLogin")
+            if (txtPassword.value == "" || txtUsername.value == "" || txtemail.value == "" || txtname.value == "") {
+                alert("Boş Birakilamaz")
+            }
+            else {
+                fetch('http://localhost:8080/register', {
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: txtUsername.value,
+                        password: txtPassword.value,
+                        email: txtemail.value,
+                        name: txtname.value
+                    }),
+                    headers: { "Content-type": "application/json; charset=UTF-8" }
+                })
+                    .then(response => response.json())
+                    .then(value => {
+                        if (value) {
+                            alert("kayit başarili");
+                        }
+                    })
+            }
+        }
+    </script>
+</body>
+
+</html>
